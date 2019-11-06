@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
-project(executable VERSION 1.0.0 LANGUAGES CXX)
+project(library VERSION 1.0.0 LANGUAGES CXX)
 
 # Executable
 set(SOURCES
-    src/main.cpp
+    src/lib.cpp
 )
 set(HEADERS
 )
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # Compile options
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
@@ -26,7 +26,8 @@ endif()
 # Include directories
 target_include_directories(${PROJECT_NAME}
 PUBLIC
-    include
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 PRIVATE
 )
 
@@ -36,4 +37,9 @@ install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
+)
+install(DIRECTORY  
+  include/
+  DESTINATION include
+  FILES_MATCHING PATTERN "*.h"
 )
