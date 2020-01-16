@@ -5,7 +5,6 @@ project(executable VERSION 1.0.0 LANGUAGES CXX)
 option(${PROJECT_NAME}_BUILD_TESTS "Build ${PROJECT_NAME} tests" ON)
 option(${PROJECT_NAME}_INSTALL "Generate CMake install for ${PROJECT_NAME}" ON)
 
-
 # Executable
 set(SOURCES
     src/main.cpp
