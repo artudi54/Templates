@@ -662,3 +662,5 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,visualStudio,visualstudiocode,clion+all,eclipse,qtcreator,vim,cmake,ninja,qt,qml
+
+*build*/
