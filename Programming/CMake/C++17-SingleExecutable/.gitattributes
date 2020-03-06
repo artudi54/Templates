@@ -1,4 +1,4 @@
-* text=lf
+* text eol=lf
 
 ###### Git
 .gitattributes text

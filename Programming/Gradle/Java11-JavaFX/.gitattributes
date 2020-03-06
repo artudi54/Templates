@@ -1,4 +1,4 @@
-* text=lf
+* text eol=lf
 
 #sources
 *.c text
