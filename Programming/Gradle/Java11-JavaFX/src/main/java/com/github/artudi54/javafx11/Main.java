@@ -9,21 +9,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.BeanCreationException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
+import java.util.Objects;
+
+
 @SpringBootApplication
 public class Main extends Application {
+    @Nullable
     private ConfigurableApplicationContext springContext;
-    private Environment environment;
-    private FXMLLoader fxmlLoader;
+    @Nullable
     private ApplicationConfiguration configuration;
-    private String initializeError;
+    @Nullable
+    private Exception creationException;
     
-    public static void main(String[] args) {
+    public static void main(@NotNull String[] args) {
         launch(args);
     }
     
@@ -31,46 +36,47 @@ public class Main extends Application {
     public void init() {
         try {
             springContext = SpringApplication.run(Main.class);
-            environment = springContext.getEnvironment();
-            fxmlLoader = new FXMLLoader();
-            fxmlLoader.setControllerFactory(springContext::getBean);
             configuration = springContext.getBean(ApplicationConfiguration.class);
-        }
-        catch (BeanCreationException exc) {
-            Throwable rootCause = exc.getRootCause();
-            if (rootCause != null)
-                initializeError = rootCause.getMessage();
-            else
-                initializeError = "Critical error occurred";
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            creationException = exc;
         }
     }
     
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        if (initializeError != null)
-            showErrorAndQuit(initializeError);
-        else
+    public void start(@NotNull Stage primaryStage) throws Exception {
+        if (creationException != null) {
+            showErrorAndQuit();
+        }
+        else {
             showWindow(primaryStage);
+        }
     }
 
-    private void showErrorAndQuit(String message) {
-        String fullMessage = message + ". Program will now exit";
+    private void showErrorAndQuit() {
+        String fullMessage = "Critical error occurred. Program will now exit";
+        
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Critical error");
         alert.setHeaderText("Critical application error occurred");
         alert.setContentText(fullMessage);
         alert.showAndWait();
+        
         Platform.exit();
         System.exit(1);
     }
 
-    private void showWindow(Stage primaryStage) throws Exception {
-        fxmlLoader.setLocation(getClass().getResource("/fxml/main.fxml"));
+    private void showWindow(@NotNull Stage primaryStage) throws Exception {
+        Objects.requireNonNull(springContext);
+        Objects.requireNonNull(configuration);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        fxmlLoader.setControllerFactory(springContext::getBean);
+        
         Parent rootNode = fxmlLoader.load();
         Scene scene = new Scene(rootNode);
 
-        primaryStage.setTitle(environment.getProperty("application.descriptiveName"));
         primaryStage.setScene(scene);
+        configuration.getWindowParameters().bindWithStage(primaryStage);
         primaryStage.show();
     }
 

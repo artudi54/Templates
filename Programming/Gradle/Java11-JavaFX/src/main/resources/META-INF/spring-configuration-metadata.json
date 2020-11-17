@@ -1,0 +1,33 @@
+{
+    "properties": [
+        {
+            "name": "application.name",
+            "type": "java.lang.String",
+            "description": "Simple application name"
+        },
+        {
+            "name": "application.config",
+            "type": "java.lang.String",
+            "description": "Config filename"
+        },
+        {
+            "name": "application.cache",
+            "type": "java.lang.String",
+            "description": "Cache filename"
+        },
+        {
+            "name": "application.window.title",
+            "type": "java.lang.String",
+            "description": "Default window title"
+        },
+        {
+            "name": "application.window.defaultWidth",
+            "type": "java.lang.Double",
+            "description": "Default window width"
+        },
+        {
+            "name": "application.window.defaultHeight",
+            "type": "java.lang.Double",
+            "description": "Default window height"
+        }
+] }
