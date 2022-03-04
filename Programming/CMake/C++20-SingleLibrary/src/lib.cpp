@@ -1,5 +1,5 @@
 #include <iostream>
 
-int main() {
+void library() {
     std::cout << "Hello world!\n";
 }
