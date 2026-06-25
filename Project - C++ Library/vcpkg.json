@@ -1,7 +1,7 @@
 {
-    "name": "library",
+    "name": "executable",
     "version-string": "1.0.0",
     "dependencies": [
-
+        "boost-algorithm"
     ]
 }

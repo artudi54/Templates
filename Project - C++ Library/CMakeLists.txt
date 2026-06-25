@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 include(cmake/ProjectSettings.cmake)
 project(library VERSION 1.0.0 LANGUAGES ASM C CXX)
 
 # Configuration
 option(${PROJECT_NAME}_BUILD_TESTS "Build ${PROJECT_NAME} tests" ON)
 option(${PROJECT_NAME}_INSTALL "Generate CMake install for ${PROJECT_NAME}" ON)
+
+# Dependencies
+find_package(Boost REQUIRED CONFIG COMPONENTS algorithm)
 
 # Executable
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS include/*.h include/*.h src/*.h src/*.hpp)
@@ -21,6 +24,11 @@ PUBLIC
 PRIVATE
     src
 )
+
+# Libraries
+target_link_libraries(${PROJECT_NAME}
+PRIVATE
+    Boost::algorithm)
 
 # Install configuration
 if(${PROJECT_NAME}_INSTALL)

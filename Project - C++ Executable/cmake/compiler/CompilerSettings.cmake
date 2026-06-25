@@ -5,7 +5,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 function(set_target_compilation_options target)
-    target_compile_features(${target} PUBLIC cxx_std_20 c_std_11)
+    target_compile_features(${target} PUBLIC cxx_std_23 c_std_23)
     set_target_properties(${target} PROPERTIES
             CXX_STANDARD_REQUIRED ON
             CXX_EXTENSIONS OFF)
